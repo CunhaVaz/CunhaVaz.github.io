@@ -78,9 +78,29 @@
 
   // ---------- core: responder ----------
   async function answerQuestion(q) {
+    // Deteta idioma a partir da página (en/ na URL → EN)
+    const isEN = location.pathname.includes('/en/') || document.documentElement.lang === 'en';
+    const T = isEN
+      ? { llm: 'Mode: LLM (backend)', local: 'Mode: local search', intro1: 'Answer based on the CV:', introN: n => 'Summary from ' + n + ' sections of the CV:', close: '<br/><br/><em>For direct contact: cunha.vaz@sapo.pt</em>', notFound: [
+          "I couldn't find a direct answer in Francisco's CV. Try another question, for example:",
+          "• <em>“What is his experience with AI applied to industry?”</em>",
+          "• <em>“What projects has he led in Africa?”</em>",
+          "• <em>“What technical tools does he master?”</em>",
+          "",
+          "For direct contact: <strong>cunha.vaz@sapo.pt</strong> · <strong>+351 926 771 211</strong>"
+        ].join('<br/>') }
+      : { llm: 'Modo: LLM (backend)', local: 'Modo: pesquisa local', intro1: 'Resposta com base no CV:', introN: n => 'Resumo a partir de ' + n + ' secções do CV:', close: '<br/><br/><em>Para conversa direta: cunha.vaz@sapo.pt</em>', notFound: [
+          "Não encontrei uma resposta direta no CV do Francisco. Pergunta-me outra coisa, por exemplo:",
+          "• <em>“Que experiência tem em IA aplicada à indústria?”</em>",
+          "• <em>“Que projetos fez em África?”</em>",
+          "• <em>“Que ferramentas técnicas domina?”</em>",
+          "",
+          "Para contacto direto: <strong>cunha.vaz@sapo.pt</strong> · <strong>+351 926 771 211</strong>"
+        ].join('<br/>') };
+
     // Se houver backend configurado, usa-o
     if (window.CV_AGENT_ENDPOINT) {
-      if (modeLabel) modeLabel.textContent = 'Modo: LLM (backend)';
+      if (modeLabel) modeLabel.textContent = T.llm;
       const context = pickTopChunks(q, 4).map(c => c.text).join('\n\n');
       const res = await fetch(window.CV_AGENT_ENDPOINT, {
         method: 'POST',
@@ -93,8 +113,8 @@
     }
 
     // Caso contrário, pesquisa local sobre os chunks do CV
-    if (modeLabel) modeLabel.textContent = 'Modo: pesquisa local';
-    return localSearch(q);
+    if (modeLabel) modeLabel.textContent = T.local;
+    return localSearch(q, T);
   }
 
   // ---------- pesquisa local ----------
@@ -127,23 +147,11 @@
     return scored.filter(x => x.s > 0).slice(0, k).map(x => x.c);
   }
 
-  function localSearch(q) {
+  function localSearch(q, T) {
     const top = pickTopChunks(q, 3);
-    if (!top.length) {
-      return [
-        "Não encontrei uma resposta direta no CV do Francisco. Pergunta-me outra coisa, por exemplo:",
-        "• <em>“Que experiência tem em IA aplicada à indústria?”</em>",
-        "• <em>“Que projetos fez em África?”</em>",
-        "• <em>“Que ferramentas técnicas domina?”</em>",
-        "",
-        "Para contacto direto: <strong>cunha.vaz@sapo.pt</strong> · <strong>+351 926 771 211</strong>"
-      ].join('<br/>');
-    }
-    const intro = top.length === 1
-      ? 'Resposta com base no CV:'
-      : 'Resumo a partir de ' + top.length + ' secções do CV:';
+    if (!top.length) return T.notFound;
+    const intro = top.length === 1 ? T.intro1 : T.introN(top.length);
     const body = top.map((c, i) => `<strong>${i + 1}.</strong> ${c.text}`).join('<br/><br/>');
-    const close = '<br/><br/><em>Para conversa direta: cunha.vaz@sapo.pt</em>';
-    return intro + '<br/><br/>' + body + close;
+    return intro + '<br/><br/>' + body + T.close;
   }
 })();

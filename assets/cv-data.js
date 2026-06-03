@@ -28,8 +28,8 @@ window.CV_CHUNKS = [
     text: "Aplicação de IA à indústria: durante a função de Global Quality Manager na Biagio Indústria S.A. introduzi IA em processos industriais (relatórios automáticos, classificação de não-conformidades, dashboards Power BI). Em consultoria, desenhei roadmaps de transformação digital e Industry 4.0 para PMEs industriais — manutenção preditiva, qualidade visual, forecasting, otimização energética, assistente RAG sobre SOPs."
   },
   {
-    topics: ["capgemini", "consultoria", "encaixe", "porquê", "fundão", "nearshore"],
-    text: "Encaixe na Capgemini: o perfil combina experiência executiva sénior em ambientes industriais complexos com competências técnicas atualizadas em IA. Procuro contribuir em projetos de transformação digital, IA aplicada a operações, qualidade e supply chain, e consultoria a clientes industriais — preferencialmente em modelo nearshore a partir de Covilhã / Fundão ou em projetos internacionais. Falo PT, ES e FR fluentes e tenho bom nível de inglês profissional."
+    topics: ["projetos", "tipo de projeto", "consultoria", "encaixe", "porquê", "nearshore", "fundão", "covilhã"],
+    text: "Tipos de projeto onde pode contribuir: transformação digital, IA aplicada a operações, qualidade e supply chain, consultoria a clientes industriais, Industry 4.0, manutenção preditiva, automação de processos, copilotos generativos para equipas operacionais. Combina experiência executiva sénior em ambientes industriais complexos com competências técnicas atualizadas em IA. Preferência por modelo nearshore a partir de Covilhã / Fundão ou projetos internacionais (PT, AO, RDC e mercados europeus). Idiomas: PT, ES, FR fluentes; EN bom nível profissional."
   },
   {
     topics: ["angola", "rdc", "congo", "kinshasa", "áfrica", "africa", "internacional", "expatriação"],
